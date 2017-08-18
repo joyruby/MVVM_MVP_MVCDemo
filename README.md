@@ -1,0 +1,13 @@
+## MVC
+在目前android开发过程中，view可以理解成那些在res/layout下的xml文件。我们可以通过activity获取到xml文件，并可以获取里面定义的组件对象即view对象。有了view对象，对其添加相应操作，这个过程对应着业务逻辑层。如果有数据存储和请求，就会有model层出现。一般是一些网络请求的数据封装。所有这些都可以在activity里完成。这种开发方式应该就是所谓的MVC。
+view和model在这种开发过程中很容易区分，所以在controller里就是，获取view，更新model，或者是拿到数据更新view：
+view ->controller ->model
+model->controler ->view
+看上去这种方式并没有什么不好的。唯一的不好之处就是view和controller被绑定在一起。就像欧几里集合第5个定义一样。似乎很正常。
+## MVP
+view一旦和controller分开，就有了很多复用的可能，这就是软件开发发展的动力。所以就有了MVP。view和controller分离需要重新定义view，在MVP里view不再是res/layout下的xml文件，view是一个定义了行为能力的对象，一般认为是acitivity。activity是对MVC里view的封装。view拥有了一些可以更新视图的方法，在MVP里P就可以直接调用。等会！！！P还是需要拿到view的引用的？这样岂不是没有完全分离！
+
+接口，P拿到的是view的行为规范（接口），任何具备这样行为规范的view都可以为P所用。所以封装view的activity必须实现对应的view接口。这就是MVP，一个分离了view的MVC。但是感觉上相对于MVC并不是完全提升，毕竟需要开发者开发之前先把接口定义好，这可能要求有点高。但是对于追求简洁的人来说，就是爽！
+## MVVM
+可不可以更爽呢？那得看你想怎么爽了。双向绑定！view和model的双向绑定。android中DataBinding实现了这种绑定。绑定之后的view和model，不再需要开发者因为一方的修改去添加更新另外一方的代码。通过DataBinding，MVP中P就没有存在的必要了，去除了书写更新view和model的代码，开发者的思考变成了如何根据view绑定合适的model，很多时候数据model并适合绑定在view上，这就需要我们对model封装一层，于是就有了viewmodel，一个根据view对model进行封装并可以绑定在view上的model。
+这里的view依然是MVP中的view（activity），只是不再需要去继承什么接口。开发者需要关心的是，view中需要绑定哪些数据，view变化后数据需要怎么改变。
